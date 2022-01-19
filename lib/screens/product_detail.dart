@@ -9,10 +9,11 @@ class productdetail extends StatefulWidget {
 
 class _productdetailState extends State<productdetail> {
   bool _isFavorited = false;
-
   final _formkey = GlobalKey<FormState>();
   TextEditingController nameController = TextEditingController();
   TextEditingController nameController2 = TextEditingController();
+  double firstFieldValue = 5;
+  double secondFieldValue = 1;
 
   @override
   void dispose() {
@@ -85,7 +86,7 @@ class _productdetailState extends State<productdetail> {
                               width: 5.0,
                             ),
                             Text(
-                              '5',
+                              "${firstFieldValue * secondFieldValue}",
                               style: TextStyle(
                                 fontSize: 17.0,
                                 fontWeight: FontWeight.bold,
@@ -134,39 +135,29 @@ class _productdetailState extends State<productdetail> {
                     child: Column(
                       children: [
                         TextFormField(
-                          controller: nameController,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(),
-                            labelText: 'enter Quantity in KG',
-                          ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'please enter Quantity';
-                            }
-                            return null;
-                          },
-                        ),
+                            controller: nameController,
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'enter Quantity in KG',
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'please enter Quantity';
+                              }
+                              return null;
+                            },
+                            onChanged: (value) {
+                              if (value.isEmpty) {
+                                setState(() => secondFieldValue = 1);
+                              } else {
+                                setState(() {
+                                  secondFieldValue = double.parse(value);
+                                });
+                              }
+                            }),
                         SizedBox(
                           height: 5,
                         ),
-                        Align(
-                            alignment: Alignment.centerRight,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.green,
-                              ),
-                              onPressed: () {
-                                if (_formkey.currentState!.validate()) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text('processing data')),
-                                  );
-                                }
-
-                                print('text field : ${nameController.text}');
-                              },
-                              child: Text('Ok'),
-                            )),
                         Row(
                           children: [
                             SizedBox(
@@ -191,34 +182,10 @@ class _productdetailState extends State<productdetail> {
                             border: OutlineInputBorder(),
                             labelText: 'leave comment',
                           ),
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'please enter your comment';
-                            }
-                            return null;
-                          },
                         ),
                         SizedBox(
                           height: 5,
                         ),
-                        Align(
-                            alignment: Alignment.centerRight,
-                            child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                primary: Colors.green,
-                              ),
-                              onPressed: () {
-                                if (_formkey.currentState!.validate()) {
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    const SnackBar(
-                                        content: Text('processing data')),
-                                  );
-                                }
-
-                                print('text field : ${nameController2.text}');
-                              },
-                              child: Text('Ok'),
-                            )),
                         SizedBox(
                           height: 5,
                         ),
@@ -228,7 +195,15 @@ class _productdetailState extends State<productdetail> {
                               side: BorderSide(width: 3),
                               elevation: 6,
                             ),
-                            onPressed: () {},
+                            onPressed: () {
+                              if (_formkey.currentState!.validate()) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                      content: Text('processing data')),
+                                );
+                              }
+                              print('Quantity : ${nameController.text}');
+                            },
                             child: Text('Add to cart')),
                       ],
                     ),

@@ -8,6 +8,7 @@ import 'package:flutter_application_6/screens/sign_up.dart';
 import '../model/http_exception.dart';
 
 class sign_in extends StatefulWidget {
+  static const routeName = '/Sign-in';
   const sign_in({Key? key}) : super(key: key);
 
   @override
@@ -248,30 +249,18 @@ class _sign_inState extends State<sign_in> with SingleTickerProviderStateMixin {
                 ),
               )),
             ),
+
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Padding(padding: EdgeInsets.only(bottom: size.height / 1)),
-                InkWell(
-                  onTap: () {},
-                  child: const Text("Forget Password?",
-                      style: TextStyle(fontSize: 16)),
-                ),
-                const Padding(padding: EdgeInsets.only(left: 20, top: 0)),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const SignUp()),
-                    );
-                  },
-                  child: const Text(
-                    "Sign Up",
-                    style: TextStyle(fontSize: 16),
+                TextButton(
+                  child: Text('Forgot Password?'),
+                  onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (context) => ResetScreen()),
                   ),
-                ),
+                )
               ],
-            ),
+            )
           ],
         ),
       ),

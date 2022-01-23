@@ -1,76 +1,89 @@
 import 'package:flutter/material.dart';
+import 'package:fruit_shope/model/cart_item.dart' show  CartItem;
+import 'package:fruit_shope/model/order_item.dart' show  OrderItem;
 
-class CartItem{
-  final product_name;
-  final product_picture;
-  final product_quantity;
-  final product_price;
-  CartItem({
-    this.product_name,
-    this.product_picture,
-    this.product_quantity,
-    this.product_price
-});
-}
 
-class Cart with ChangeNotifier{
-  Map<String, CartItem> _items={};
-  Map<String, CartItem> get items{
+class Cart with ChangeNotifier {
+  Map<String, CartItem> _items = {};
+
+  Map<String, CartItem> get items {
     return {..._items};
   }
-  int get itemCount{
+
+  int get itemCount {
     return _items.length;
   }
-  double get totalAmount{
-    var total=0.0;
+
+  double get totalAmount {
+    var total = 0.0;
     _items.forEach((key, CartItem) {
-      total+= CartItem.product_price*CartItem.product_quantity;
+      total += CartItem.price * CartItem.quantity;
     });
     return total;
   }
 
-  void addItem(productName,productPrice ){
-    if(_items.containsKey(productName)){
-      _items.update(productName, (existingCartItem) => CartItem(
-        product_name:existingCartItem.product_name,
-        product_price: existingCartItem.product_price,
-        product_quantity: existingCartItem.product_quantity+1,
-
-      ));
-    }else{
-      _items.putIfAbsent((productName), () => CartItem(
-        product_name: DateTime.now().toString(),
-        product_quantity: 1,
-        product_price: productPrice,
-      ),);
-      
+  void addItem(String productId, double price, String title, String name) {
+    if (_items.containsKey(productId)) {
+      _items.update(
+        productId,
+        (exisitingCartItem) => CartItem(
+          id: exisitingCartItem.id,
+          title: exisitingCartItem.title,
+          price: exisitingCartItem.price,
+          name: exisitingCartItem.name,
+          quantity: exisitingCartItem.quantity + 1,
+          //imagename: exisitingCartItem.imagename,
+        ),
+      );
+    } else {
+      _items.putIfAbsent(
+        //law product asln msh mwgood (putIfAbsent)
+        productId,
+        () => CartItem(
+          id: DateTime.now().toString(), //date el product et7at fe fl cart
+          title: title,
+          quantity: 1,
+          price: price,
+          name: name,
+          //imagename: imagename
+        ),
+      );
     }
     notifyListeners();
   }
 
-  void removItem(productName){
-    _items.remove(productName);
+  void removeItem(String productId) {
+    _items.remove(productId);
     notifyListeners();
   }
 
-  void removSingleItem(productName){
-    if(!_items.containsKey(productName))
-      return;
-    if(_items[productName]!.product_quantity>1){
-      _items.update(productName, (existingCartItem) => CartItem(
-        product_name:existingCartItem.product_name,
-        product_price: existingCartItem.product_price,
-        product_quantity: existingCartItem.product_quantity-1,
-      ));
-    }else{
-      _items.remove(productName);
+  void removeSingleItem(String ProductId) {
+    if (!_items.containsKey(ProductId)) {
+      //law item not contain that key
+      return; //stop ba2a
+    }
+    if (_items[ProductId]!.quantity > 1) {
+      //nul????????????
+      _items.update(
+        ProductId,
+        (exisitingCartItem) => CartItem(
+          id: exisitingCartItem.id,
+          title: exisitingCartItem.title,
+          price: exisitingCartItem.price,
+          name: exisitingCartItem.name,
+          quantity: exisitingCartItem.quantity + 1,
+          //imagename: exisitingCartItem.imagename
+        ),
+      );
+    } else {
+      _items.remove(ProductId);
     }
     notifyListeners();
   }
 
-  void clear(){
-    _items={};
+  void clear() {
+    //clear all
+    _items = {};
     notifyListeners();
   }
-
 }

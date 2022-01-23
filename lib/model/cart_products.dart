@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:fruit_shop/data/cart_data.dart';
+import 'package:fruit_shope/data/cart_data.dart';
 
+/*
 class FruitsAndVegs {
   final String picture;
   final String name;
@@ -8,8 +9,7 @@ class FruitsAndVegs {
   final String quantity;
   FruitsAndVegs(this.picture, this.name, this.price, this.quantity);
 }
-
-
+*/
 class CartProducts extends StatefulWidget {
   const CartProducts({Key? key}) : super(key: key);
 
@@ -18,19 +18,18 @@ class CartProducts extends StatefulWidget {
 }
 
 class _CartProductsState extends State<CartProducts> {
-
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
       itemCount: product_on_the_cart.length,
-        itemBuilder: (context,index){
+      itemBuilder: (context, index) {
         return Single_cart_product(
           product_name: product_on_the_cart[index]["name"],
           product_picture: product_on_the_cart[index]["picture"],
           product_quantity: product_on_the_cart[index]["quantity"],
           product_price: product_on_the_cart[index]["price"],
-        ) ;
-        },
+        );
+      },
     );
   }
 }
@@ -40,12 +39,11 @@ class Single_cart_product extends StatelessWidget {
   final product_picture;
   final product_quantity;
   final product_price;
-  Single_cart_product({
-    this.product_name,
-    this.product_picture,
-    this.product_quantity,
-    this.product_price
-});
+  Single_cart_product(
+      {this.product_name,
+      this.product_picture,
+      this.product_quantity,
+      this.product_price});
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -59,41 +57,50 @@ class Single_cart_product extends StatelessWidget {
         ],
       ),
       child: Card(
-
         child: ListTile(
-          leading: Image.asset(product_picture,width: 50.0,),
+          leading: Image.asset(
+            product_picture,
+            width: 50.0,
+          ),
           title: Text(product_name),
-
-          subtitle:  Column(
+          subtitle: Column(
             children: [
               Row(
-                children: [
-
-                ],
+                children: [],
               ),
               Row(
                 children: [
-                  Padding(
-                      padding: const EdgeInsets.all(4.0),
+                  const Padding(
+                    padding: EdgeInsets.all(2.0),
                     child: Text("Price:"),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(1.0),
-                    child: Text(product_price,style: TextStyle(color: Theme.of(context).primaryColor),),
+                    child: Text(
+                      product_price,
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
                   ),
-
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(40.0, 4.0, 4.0, 4.0),
+                  const Padding(
+                    padding: EdgeInsets.fromLTRB(15.0, 2.0, 2.0, 2.0),
                     child: Text("Quantity:"),
                   ),
                   Padding(
                     padding: const EdgeInsets.all(1.0),
-                    child: Text(product_quantity,style: TextStyle(color: Theme.of(context).primaryColor),),
+                    child: Text(
+                      product_quantity,
+                      style: TextStyle(color: Theme.of(context).primaryColor),
+                    ),
                   ),
-                  IconButton(icon: Icon(Icons.remove_circle), onPressed: (){},),
-                  Text('1'),
-                  IconButton(icon: Icon(Icons.add_circle), onPressed: (){},),
-
+                  IconButton(
+                    icon: const Icon(Icons.remove_circle),
+                    onPressed: () {},
+                  ),
+                  const Text('1'),
+                  IconButton(
+                    icon: const Icon(Icons.add_circle),
+                    onPressed: () {},
+                  ),
                 ],
               )
             ],
@@ -103,4 +110,3 @@ class Single_cart_product extends StatelessWidget {
     );
   }
 }
-

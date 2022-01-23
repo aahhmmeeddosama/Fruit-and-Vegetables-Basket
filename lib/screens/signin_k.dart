@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import 'package:flutter_application_6/Provider/auth.dart';
-import 'package:flutter_application_6/screens/home_screen.dart';
-import 'package:flutter_application_6/screens/sign_up.dart';
+import '../Provider/auth.dart';
+import '../screens/home_screen.dart';
+import '../screens/sign_up.dart';
 
 import '../model/http_exception.dart';
 
 class sign_in extends StatefulWidget {
-  static const routeName = '/Sign-in';
+  static const routeName = '/Sign-in-updated';
   const sign_in({Key? key}) : super(key: key);
 
   @override
@@ -120,18 +120,6 @@ class _sign_inState extends State<sign_in> with SingleTickerProviderStateMixin {
       ),
     );
   }
-  /*
-  void _switchAuthMode() {
-    if (_authMode == AuthMode.Login) {
-      setState(() {
-        _authMode = AuthMode.SignUp;
-      });
-    } else {
-      setState(() {
-        _authMode = AuthMode.Login;
-      });
-    }
-  }*/
 
   bool _obsecure = true;
   @override
@@ -141,6 +129,39 @@ class _sign_inState extends State<sign_in> with SingleTickerProviderStateMixin {
       body: SingleChildScrollView(
         child: Column(
           children: [
+            /*Image.asset(
+              'assets/signin/Fruits-and-Vegetables.jpg',
+              width: size.width,
+            ),
+            Center(
+              child: Column(
+                children: [
+                  Text(
+                    "Fruits & Vegtables",
+                    //primary color that is green found in the main
+                    style: TextStyle(
+                        color: Theme.of(context).primaryColor,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold),
+                  ),
+                ],
+              ),
+            ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                //The title that appear before the text area
+                const Padding(
+                  padding: EdgeInsets.only(left: 10, top: 200),
+                  child: Text(
+                    "Sign In",
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                    ),
+                  ),
+                ),*/
+            //const Padding(padding: EdgeInsets.all(0), child: sign_in()),
             //add the image and full the screen width
 
             Padding(
@@ -177,10 +198,11 @@ class _sign_inState extends State<sign_in> with SingleTickerProviderStateMixin {
                       TextFormField(
                         controller: passChecker,
                         validator: (value) {
-                          if (value == null ||
-                              value.isEmpty ||
-                              value.length <= 8) {
-                            return 'Password is too weak';
+                          if (value == null || value.isEmpty) {
+                            return 'Password is not entered';
+                          }
+                          if (value.length <= 8) {
+                            return 'Password is not correct';
                           }
                           return null;
                         },
@@ -248,19 +270,33 @@ class _sign_inState extends State<sign_in> with SingleTickerProviderStateMixin {
                   ),
                 ),
               )),
-            ),
 
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                TextButton(
-                  child: Text('Forgot Password?'),
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => ResetScreen()),
-                  ),
-                )
-              ],
-            )
+              /* Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(padding: EdgeInsets.only(bottom: size.height / 1)),
+                    InkWell(
+                      onTap: () {},
+                      child: const Text("Forget Password?",
+                          style: TextStyle(fontSize: 16)),
+                    ),
+                    const Padding(padding: EdgeInsets.only(left: 20, top: 0)),
+                    InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const SignUp()),
+                        );
+                      },
+                      child: const Text(
+                        "Sign Up",
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  ],
+                ),*/
+            ),
           ],
         ),
       ),

@@ -3,54 +3,62 @@ import 'dart:convert';
 import 'product_provider.dart';
 import 'package:http/http.dart' as http;
 import '../model/http_exception.dart';
+import 'package:network_image_mock/network_image_mock.dart';
 
 //with is mixin
 class Products with ChangeNotifier {
   List<Product> _items = [
     Product(
-        imagename: 'assets/banana.jpg',
+        imagename:
+            'https://www.seekpng.com/png/detail/34-341853_banana-png-image-with-transparent-background-1-pound.png',
         name: 'Banana',
         price: 10.00,
         description: 'Fresh Banana Fruit',
         id: '9',
         title: 'Fruits'),
     Product(
-        imagename: 'assets/orange.jpg',
+        imagename:
+            'https://healthjade.com/wp-content/uploads/2017/10/orange-fruit.jpg',
         name: 'Orange',
         price: 7.50,
         description: 'Fresh Banana Fruit',
         id: '7',
         title: 'Fruits'),
     Product(
-        imagename: 'assets/Strawberry.jpg',
+        imagename:
+            'https://pharmanewsonline.com/wp-content/uploads/2021/08/Berry.jpg',
         name: 'Strawberry',
         price: 20.00,
         description: 'Fresh Strawberry Fruit',
         id: '2',
         title: 'Fruits'),
     Product(
-        imagename: 'assets/pomegranate.jpg',
+        imagename:
+            'https://png.pngitem.com/pimgs/s/134-1343541_download-pomegranate-png-clipart-pomegranate-png-transparent-png.png',
         name: 'Pomegranate',
         price: 15.00,
         description: 'Fresh Pomegranate Fruit',
         id: '6',
         title: 'Fruits'),
     Product(
-        imagename: 'assets/tomato.jpg',
+        imagename:
+            'https://www.pngitem.com/pimgs/m/21-214249_tomato-png-transparent-tomato-png-png-download.png',
         name: 'Tomato',
         price: 8.00,
         description: 'Fresh Tomato Vegetable',
         id: '11',
         title: 'Vegetables'),
     Product(
-        imagename: 'assets/carrots.jpg',
+        imagename:
+            'https://www.kindpng.com/picc/m/111-1115732_carrots-png-image-transparent-carrots-png-png-download.png',
         name: 'Carrot',
         price: 6.00,
         description: 'Fresh carrot Vegetable',
         id: '14',
         title: 'Vegetables'),
     Product(
-        imagename: 'assets/cucumber.jpg',
+        imagename:
+            'https://www.pngkit.com/png/detail/340-3405491_cucumbers-png-photos-transparent-background-cucumber-transparent.png',
         name: 'Cucumber',
         price: 5.00,
         description: 'Fresh Cucumber Vegetable',
@@ -59,8 +67,8 @@ class Products with ChangeNotifier {
   ];
   String token = '';
   String userID = '';
-  getData(String token, String userid, List<Product> products) {
-    token = token;
+  getData(String Usertoken, String userid, List<Product> products) {
+    token = Usertoken;
     userID = userid;
     _items = products;
     notifyListeners();
@@ -85,7 +93,7 @@ class Products with ChangeNotifier {
     final filteredString =
         filterByUser ? 'orderBy="creatorId"&equalTo="$userID"' : '';
     var url =
-        'https://fruits-vegetables-basket-19e0d-default-rtdb.firebaseio.com/products.json?auth=$token&$filteredString';
+        'https://fruitapp-8455c-default-rtdb.firebaseio.com/products.json?auth=$token&$filteredString';
     try {
       final response = await http.get(Uri.parse(url));
       final data = json.decode(response.body) as Map<String, dynamic>;
@@ -93,35 +101,20 @@ class Products with ChangeNotifier {
         return;
       }
       url =
-          'https://fruits-vegetables-basket-19e0d-default-rtdb.firebaseio.com/userFavourites/$userID.json?auth=$token';
+          'https://fruitapp-8455c-default-rtdb.firebaseio.com/userFavourites/$userID.json?auth=$token';
       final favouriteResponse = await http.get(Uri.parse(url));
       final favouriteData = json.decode(favouriteResponse.body);
       final List<Product> gettedproducts = [];
-      /*data.forEach((productid, productData) {
-        gettedproducts.add(
-          Product(
-            id: productid,
-            title: productData['title'],
-            description: productData['description'],
-            imagename: productData['imagename'],
-            price: productData['price'],
-            name: productData['name'],
-            isFavourite: favouriteData == null
-                ? false
-                : favouriteData[productid] ?? false,
-          ),
-        );
-      });*/
-      //_items = gettedproducts;
       notifyListeners();
     } catch (e) {
       throw e;
     }
   }
 
+  //marian
   Future<void> addProduct(Product product) async {
-    final url =
-        'https://fruits-vegetables-basket-19e0d-default-rtdb.firebaseio.com/products.json?auth=$token';
+    const url =
+        'https://fruitapp-8455c-default-rtdb.firebaseio.com/products.json';
     try {
       final response = await http.post(Uri.parse(url),
           body: json.encode({
@@ -129,7 +122,6 @@ class Products with ChangeNotifier {
             'description': product.description,
             'price': product.price,
             'imagename': product.imagename,
-            'creatorId': userID,
             'name': product.name
           }));
       final newProduct = Product(
@@ -144,6 +136,7 @@ class Products with ChangeNotifier {
       //insert can add data in the begin while add at the end
       notifyListeners();
     } catch (e) {
+      print(e);
       throw e;
     }
   }
@@ -152,7 +145,7 @@ class Products with ChangeNotifier {
     final index = _items.indexWhere((product) => product.id == id);
     if (index >= 0) {
       final url =
-          'https://fruits-vegetables-basket-19e0d-default-rtdb.firebaseio.com/products/$id.json?auth=$token';
+          'https://fruitapp-8455c-default-rtdb.firebaseio.com/products/$id.json?auth=$token';
       await http.patch(Uri.parse(url),
           body: json.encode({
             'title': newproduct.title,
@@ -168,9 +161,9 @@ class Products with ChangeNotifier {
     }
   }
 
-  Future<void> deleteProduct(String id, Product newproduct) async {
+  Future<void> deleteProduct(String id) async {
     final url =
-        'https://fruits-vegetables-basket-19e0d-default-rtdb.firebaseio.com/products/$id.json?auth=$token';
+        'https://fruitapp-8455c-default-rtdb.firebaseio.com/products/$id.json?auth=$token';
     final index = _items.indexWhere((product) => product.id == id);
     Product? existingData = _items[index];
     _items.removeAt(index);
